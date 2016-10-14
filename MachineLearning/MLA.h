@@ -1,14 +1,61 @@
 //
-//  MLA.hpp
+//  MLA.h
 //  MachineLearning
 //
 //  Created by 毛润泽 on 16/10/13.
 //  Copyright © 2016年 毛润泽. All rights reserved.
 //
 
-#ifndef MLA_hpp
-#define MLA_hpp
+#ifndef MLA_h
+#define MLA_h
 
-#include <stdio.h>
+#include <cstdio>
+#include <vector>
+#include <string>
+#include <cstring>
+#include <map>
+#include "TripleTable.h"
 
-#endif /* MLA_hpp */
+#define INIT_TRAIN 0
+#define INIT_TEST 1
+#define INIT_VALI 2
+#define MAXN 200
+
+typedef char const * const ccc;
+typedef LabelOfClassification LOC;
+typedef LabelOfRegression LOR;
+
+/*short for Machine Learning Algorithm*/
+class MLA{
+public:
+    MLA();
+    virtual void solve() const = 0;
+    virtual void readFromFile(int, FILE *) = 0;
+protected:
+    TripleTable train;
+    TripleTable test;
+    TripleTable vali;
+    std::map<std::string, int> wordBag;
+};
+
+/*short for Classfication-MLA*/
+class CMLA : public MLA {
+public:
+    CMLA(ccc, ccc);
+    virtual void readFromFile(int, FILE *); //the int parameter is to indicate which Table to initial
+    virtual void solve() const = 0;
+private:
+    LOC label;
+};
+
+/*short for Regression-MLA*/
+class RMLA : public MLA{
+public:
+    RMLA(ccc, ccc, ccc);
+    virtual void readFromFile(int, FILE *); //the int parameter is to indicate which Table to initial
+    virtual void solve() const = 0;
+private:
+    LOR label;
+};
+
+#endif /* MLA_h */

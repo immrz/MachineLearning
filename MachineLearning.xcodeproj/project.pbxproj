@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE28C80F1DAFAEC70095E686 /* MLA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE28C80D1DAFAEC70095E686 /* MLA.cpp */; };
+		DE3F68C81DAE5E14003C9B4C /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE3F68C61DAE5E14003C9B4C /* Label.cpp */; };
+		DE561D611DAD1FCF00015208 /* TripleTuple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE561D601DAD1FCF00015208 /* TripleTuple.cpp */; };
 		DE7EB4E61DACCED700BCB499 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE7EB4E51DACCED700BCB499 /* main.cpp */; };
+		DE9FC5D01DADC38400F555EC /* TripleTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE9FC5CF1DADC38400F555EC /* TripleTable.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +27,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DE28C80D1DAFAEC70095E686 /* MLA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MLA.cpp; sourceTree = "<group>"; };
+		DE28C80E1DAFAEC70095E686 /* MLA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLA.h; sourceTree = "<group>"; };
+		DE3F68C61DAE5E14003C9B4C /* Label.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Label.cpp; sourceTree = "<group>"; };
+		DE3F68C71DAE5E14003C9B4C /* Label.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Label.h; sourceTree = "<group>"; };
+		DE54A3E91DB072840067EDAE /* Errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
+		DE561D5F1DAD1DF000015208 /* TripleTuple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TripleTuple.h; sourceTree = "<group>"; };
+		DE561D601DAD1FCF00015208 /* TripleTuple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TripleTuple.cpp; sourceTree = "<group>"; };
 		DE7EB4E21DACCED700BCB499 /* MachineLearning */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MachineLearning; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE7EB4E51DACCED700BCB499 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		DE7EB4EC1DACCFB800BCB499 /* TripleTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TripleTable.h; sourceTree = "<group>"; };
+		DE9FC5CF1DADC38400F555EC /* TripleTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TripleTable.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +70,16 @@
 		DE7EB4E41DACCED700BCB499 /* MachineLearning */ = {
 			isa = PBXGroup;
 			children = (
+				DE3F68C61DAE5E14003C9B4C /* Label.cpp */,
 				DE7EB4E51DACCED700BCB499 /* main.cpp */,
+				DE28C80D1DAFAEC70095E686 /* MLA.cpp */,
+				DE9FC5CF1DADC38400F555EC /* TripleTable.cpp */,
+				DE561D601DAD1FCF00015208 /* TripleTuple.cpp */,
+				DE54A3E91DB072840067EDAE /* Errors.h */,
+				DE3F68C71DAE5E14003C9B4C /* Label.h */,
+				DE28C80E1DAFAEC70095E686 /* MLA.h */,
+				DE7EB4EC1DACCFB800BCB499 /* TripleTable.h */,
+				DE561D5F1DAD1DF000015208 /* TripleTuple.h */,
 			);
 			path = MachineLearning;
 			sourceTree = "<group>";
@@ -118,7 +140,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE28C80F1DAFAEC70095E686 /* MLA.cpp in Sources */,
+				DE561D611DAD1FCF00015208 /* TripleTuple.cpp in Sources */,
 				DE7EB4E61DACCED700BCB499 /* main.cpp in Sources */,
+				DE3F68C81DAE5E14003C9B4C /* Label.cpp in Sources */,
+				DE9FC5D01DADC38400F555EC /* TripleTable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +265,7 @@
 				DE7EB4EB1DACCED700BCB499 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,14 +1,46 @@
 //
-//  Label.hpp
+//  Label.h
 //  MachineLearning
 //
 //  Created by 毛润泽 on 16/10/12.
 //  Copyright © 2016年 毛润泽. All rights reserved.
 //
 
-#ifndef Label_hpp
-#define Label_hpp
+#ifndef Label_h
+#define Label_h
 
-#include <stdio.h>
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include "Errors.h"
+#define _LABEL_CNT 6
 
-#endif /* Label_hpp */
+class LabelOfClassification{
+public:
+    LabelOfClassification();
+    LabelOfClassification(LabelOfClassification const &);
+    LabelOfClassification const &operator = (LabelOfClassification const &);
+    int at(int) const;
+private:
+    std::vector<int> labels;
+};
+
+class floatArray{
+public:
+    floatArray(float const * const, int);
+    float at(int) const;
+private:
+    float content[_LABEL_CNT];
+};
+
+class LabelOfRegression{
+public:
+    LabelOfRegression();
+    LabelOfRegression(LabelOfRegression const &);
+    LabelOfRegression const &operator = (LabelOfRegression const &);
+    float at(int, int) const;
+private:
+    std::vector<floatArray> labels;
+};
+#endif /* Label_h */
