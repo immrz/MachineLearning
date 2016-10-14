@@ -6,8 +6,8 @@
 //  Copyright © 2016年 毛润泽. All rights reserved.
 //
 
-#ifndef TripleTable_h
-#define TripleTable_h
+#ifndef TripleTable_H
+#define TripleTable_H
 
 #include <vector>
 #include <cstdio>
@@ -36,4 +36,4 @@ private:
     std::vector<TripleTuple> table;
 };
 
-#endif /* TripleTable_h */
+#endif /* TripleTable_H */

@@ -35,7 +35,7 @@ bool TripleTuple::operator == (TripleTuple const &other) const {
     return false;
 }
 
-bool TripleTuple::insert(int key, float value){
+bool TripleTuple::insert(int key, int value){
     pair<map<int,int>::iterator,bool> p = tuple.insert(pair<int,int>(key,value));
     return p.second;
 }

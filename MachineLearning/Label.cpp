@@ -18,8 +18,13 @@ LabelOfClassification::LabelOfClassification(LabelOfClassification const &a){
     *this = a;
 }
 
-LabelOfClassification const &LabelOfClassification::operator=(LabelOfClassification const &a){
+LabelOfClassification const &LabelOfClassification::operator = (LabelOfClassification const &a){
     labels = a.labels;
+    return *this;
+}
+
+LabelOfClassification const &LabelOfClassification::operator = (std::vector<int> const &a){
+    labels = a;
     return *this;
 }
 
@@ -38,8 +43,9 @@ floatArray::floatArray(float const * const p, int n){
         memset(content, 0, sizeof(content));
         return;
     }
-    else if(n != _LABEL_CNT)
+    else if(n != _LABEL_CNT){
         error(ARRAY_SIZE_NOT_MATCH);
+    }
     else
         memcpy(content, p, sizeof(content));
 }

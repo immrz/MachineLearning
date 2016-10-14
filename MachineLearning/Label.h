@@ -6,8 +6,8 @@
 //  Copyright © 2016年 毛润泽. All rights reserved.
 //
 
-#ifndef Label_h
-#define Label_h
+#ifndef Label_H
+#define Label_H
 
 #include <cstdio>
 #include <iostream>
@@ -20,7 +20,9 @@ class LabelOfClassification{
 public:
     LabelOfClassification();
     LabelOfClassification(LabelOfClassification const &);
+    
     LabelOfClassification const &operator = (LabelOfClassification const &);
+    LabelOfClassification const &operator = (std::vector<int> const &);
     int at(int) const;
 private:
     std::vector<int> labels;
@@ -43,4 +45,4 @@ public:
 private:
     std::vector<floatArray> labels;
 };
-#endif /* Label_h */
+#endif /* Label_H */

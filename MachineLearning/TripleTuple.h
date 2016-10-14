@@ -6,8 +6,8 @@
 //  Copyright © 2016年 毛润泽. All rights reserved.
 //
 
-#ifndef TripleTuple_h
-#define TripleTuple_h
+#ifndef TripleTuple_H
+#define TripleTuple_H
 
 #include <map>
 
@@ -23,7 +23,7 @@ public:
     
     /*insert pair<the order of the word, the times this word appears in this sentence>
      into tuple, and would return false if there is already such a pair in it*/
-    bool insert(int, float);
+    bool insert(int, int);
     
     /*get the value given the key, and would return -1 if no such value exists*/
     int at(int) const;
@@ -37,4 +37,4 @@ private:
     std::map<int,int> tuple;
 };
 
-#endif /* TripleTuple_h */
+#endif /* TripleTuple_H */

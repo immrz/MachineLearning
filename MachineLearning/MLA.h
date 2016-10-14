@@ -6,8 +6,8 @@
 //  Copyright © 2016年 毛润泽. All rights reserved.
 //
 
-#ifndef MLA_h
-#define MLA_h
+#ifndef MLA_H
+#define MLA_H
 
 #include <cstdio>
 #include <vector>
@@ -58,4 +58,10 @@ private:
     LOR label;
 };
 
-#endif /* MLA_h */
+class NaiveBayesCMLA : public CMLA {
+public:
+    NaiveBayesCMLA(ccc, ccc);
+    virtual void solve() const;
+};
+
+#endif /* MLA_H */

@@ -75,11 +75,11 @@
 				DE28C80D1DAFAEC70095E686 /* MLA.cpp */,
 				DE9FC5CF1DADC38400F555EC /* TripleTable.cpp */,
 				DE561D601DAD1FCF00015208 /* TripleTuple.cpp */,
-				DE54A3E91DB072840067EDAE /* Errors.h */,
-				DE3F68C71DAE5E14003C9B4C /* Label.h */,
 				DE28C80E1DAFAEC70095E686 /* MLA.h */,
 				DE7EB4EC1DACCFB800BCB499 /* TripleTable.h */,
 				DE561D5F1DAD1DF000015208 /* TripleTuple.h */,
+				DE3F68C71DAE5E14003C9B4C /* Label.h */,
+				DE54A3E91DB072840067EDAE /* Errors.h */,
 			);
 			path = MachineLearning;
 			sourceTree = "<group>";
@@ -235,6 +235,7 @@
 		DE7EB4EA1DACCED700BCB499 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -242,6 +243,7 @@
 		DE7EB4EB1DACCED700BCB499 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

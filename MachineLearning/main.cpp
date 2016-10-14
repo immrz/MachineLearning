@@ -6,15 +6,12 @@
 //  Copyright © 2016年 毛润泽. All rights reserved.
 //
 
-#include <iostream>
-#include "TripleTuple.h"
-
+//#include <iostream>
+#include "MLA.h"
+using std::cout;
+using std::endl;
 int main(int argc, const char * argv[]) {
-    TripleTuple t;
-    t.insert(1, 0);
-    t.insert(2, 10.1);
-    float a = t.at(2);
-    float b = t.at(3);
-    std::cout << a << " " << b << std::endl;
+    NaiveBayesCMLA it("train.txt", "test.txt");
+    cout << "succeed!\n";
     return 0;
 }
