@@ -14,11 +14,12 @@
 #include <string>
 #include <cstring>
 #include <map>
+#include <cmath>
 #include "TripleTable.h"
 
-#define INIT_TRAIN 0
-#define INIT_TEST 1
-#define INIT_VALI 2
+#define HINT_TRAIN 0
+#define HINT_TEST 1
+#define HINT_VALI 2
 #define MAXN 200
 
 typedef char const * const ccc;
@@ -29,9 +30,17 @@ typedef LabelOfRegression LOR;
 class MLA{
 public:
     MLA();
+    void printTrainTable() const;
+    int getTrainSize() const;
+    int getTestSize() const;
+    
     virtual void solve() const = 0;
     virtual void readFromFile(int, FILE *) = 0;
+    
 protected:
+    int trainSize;
+    int testSize;
+    int valiSize;
     TripleTable train;
     TripleTable test;
     TripleTable vali;
@@ -44,6 +53,8 @@ public:
     CMLA(ccc, ccc);
     virtual void readFromFile(int, FILE *); //the int parameter is to indicate which Table to initial
     virtual void solve() const = 0;
+
+    int getLabelAt(int, int) const;
 private:
     LOC label;
 };
@@ -62,6 +73,9 @@ class NaiveBayesCMLA : public CMLA {
 public:
     NaiveBayesCMLA(ccc, ccc);
     virtual void solve() const;
+private:
+    TripleTable reform;    //transform the 'train' table to simplify the calculation
+    int prior[_LABEL_CNT]; //prior probilities
 };
 
 #endif /* MLA_H */

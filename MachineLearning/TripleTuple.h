@@ -10,6 +10,8 @@
 #define TripleTuple_H
 
 #include <map>
+#include "Errors.h"
+#define NOT_FOUND 0
 
 class TripleTuple{
 
@@ -25,15 +27,25 @@ public:
      into tuple, and would return false if there is already such a pair in it*/
     bool insert(int, int);
     
-    /*get the value given the key, and would return -1 if no such value exists*/
+    /*get the value given the key, and would return 'NOT_FOUND' if no such value exists*/
     int at(int) const;
     
     void setWordCnt(int);
     int getWordCnt() const;
     int getOrder() const;
+    int countOfKey(int) const;
+    
+    /*Increase the value by 1 at the given key. If not exist, insert 1 as the value.*/
+    void addByOne(int);
+    
+    void addByValue(int, int);
+    
+    std::map<int,int> const &getContent() const;
+    void print() const;
+    int size() const;
 private:
-    int order;
-    int wordCnt;
+    int order; //an order to specify this tuple
+    int wordCnt; //equals to the sum of all the values in the map
     std::map<int,int> tuple;
 };
 

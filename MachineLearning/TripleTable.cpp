@@ -10,11 +10,9 @@
 #include "TripleTable.h"
 
 using std::vector;
+using std::map;
 
 TripleTable::TripleTable(){
-    rowCnt = 0;
-    colCnt = 0;
-    noneZeroCnt = 0;
     if(!table.empty())
         table.clear();
 }
@@ -24,15 +22,16 @@ TripleTable::TripleTable(TripleTable const &other){
 }
 
 TripleTable const &TripleTable::operator = (TripleTable const &other){
-    rowCnt = other.rowCnt;
-    colCnt = other.colCnt;
-    noneZeroCnt = other.noneZeroCnt;
     table = other.table;
     return *this;
 }
 
 void TripleTable::insert(TripleTuple const &item){
     table.push_back(item);
+}
+
+void TripleTable::addAt(int pos, int key, int value){
+    table[pos].addByValue(key, value);
 }
 
 int TripleTable::at(int a, int b) const {
@@ -42,4 +41,33 @@ int TripleTable::at(int a, int b) const {
     }
     else
         return table[a].at(b);
+}
+
+map<int,int> const &TripleTable::getContentAt(int pos) const {
+    return table[pos].getContent();
+}
+
+void TripleTable::setWordCntAt(int pos, int cnt){
+    table[pos].setWordCnt(cnt);
+}
+
+int TripleTable::getWordCntAt(int pos) const {
+    return table[pos].getWordCnt();
+}
+
+void TripleTable::print() const {
+    for(int i = 0; i < table.size(); ++i)
+        table[i].print();
+}
+
+int TripleTable::size() const {
+    return (int)table.size();
+}
+
+int TripleTable::sizeAt(int pos) const {
+    return table[pos].size();
+}
+
+int TripleTable::countOfKeyAt(int pos, int key) const {
+    return table[pos].countOfKey(key);
 }

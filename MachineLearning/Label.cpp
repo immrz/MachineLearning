@@ -7,6 +7,7 @@
 //
 
 #include "Label.h"
+using std::vector;
 
 /*Constructor of class LabelOfClassification*/
 LabelOfClassification::LabelOfClassification(){
@@ -37,8 +38,16 @@ int LabelOfClassification::at(int pos) const {
         return labels[pos];
 }
 
-/*Constructor of class floatArray*/
-floatArray::floatArray(float const * const p, int n){
+int LabelOfClassification::size() const {
+    return (int)labels.size();
+}
+
+void LabelOfClassification::append(vector<int> const &a){
+    labels.insert(labels.end(), a.begin(), a.end());
+}
+
+/*Constructor of class FloatArray*/
+FloatArray::FloatArray(float const * const p, int n){
     if(p == NULL){
         memset(content, 0, sizeof(content));
         return;
@@ -50,7 +59,7 @@ floatArray::floatArray(float const * const p, int n){
         memcpy(content, p, sizeof(content));
 }
 
-float floatArray::at(int pos) const {
+float FloatArray::at(int pos) const {
     if(pos >= _LABEL_CNT){
         error(INDEX_BEYOND_ARRAY_SIZE);
         return -1;

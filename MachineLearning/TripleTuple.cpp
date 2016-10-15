@@ -45,7 +45,7 @@ int TripleTuple::at(int key) const {
     if(it != tuple.end())
         return it->second;
     else
-        return -1;
+        return NOT_FOUND;
 }
 
 void TripleTuple::setWordCnt(int a){
@@ -58,4 +58,43 @@ int TripleTuple::getWordCnt() const {
 
 int TripleTuple::getOrder() const {
     return order;
+}
+
+int TripleTuple::countOfKey(int key) const {
+    return (int)tuple.count(key);
+}
+
+void TripleTuple::addByOne(int key){
+    map<int,int>::iterator it = tuple.find(key);
+    if(it == tuple.end()){
+        tuple.insert(pair<int,int>(key, 1));
+    }
+    else
+        it->second ++;
+}
+
+void TripleTuple::addByValue(int key, int value){
+    map<int,int>::iterator it = tuple.find(key);
+    if(it == tuple.end()){
+        tuple.insert(pair<int,int>(key, value));
+    }
+    else
+        it->second += value;
+}
+
+map<int,int> const &TripleTuple::getContent() const {
+    return tuple;
+}
+
+void TripleTuple::print() const {
+    printf("%d : ",order);
+    map<int,int>::const_iterator it;
+    for(it = tuple.begin(); it != tuple.end(); ++it){
+        printf("(%d, %d) ", it->first, it->second);
+    }
+    printf("\n\n");
+}
+
+int TripleTuple::size() const {
+    return (int)tuple.size();
 }
