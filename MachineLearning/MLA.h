@@ -30,6 +30,7 @@ typedef LabelOfRegression LOR;
 class MLA{
 public:
     MLA();
+    virtual ~MLA() {};
     void printTrainTable() const;
     int getTrainSize() const;
     int getTestSize() const;
@@ -52,6 +53,7 @@ protected:
 class CMLA : public MLA {
 public:
     CMLA(ccc, ccc);
+    virtual ~CMLA() {};
     virtual void readFromFile(int, FILE *); //the int parameter is to indicate which Table to initial
     virtual void solve() const = 0;
 
@@ -64,10 +66,12 @@ private:
 class RMLA : public MLA{
 public:
     RMLA(ccc, ccc, ccc);
+    virtual ~RMLA() {} ;
     virtual void readFromFile(int, FILE *); //the int parameter is to indicate which Table to initial
     virtual void solve() const = 0;
     
     int getLabelAt(int, int) const; //the two parameters are both positions
+    float const * const getLabelContentAt(int) const;
 private:
     LOR label;
 };
@@ -75,6 +79,7 @@ private:
 class NaiveBayesCMLA : public CMLA {
 public:
     NaiveBayesCMLA(ccc, ccc);
+    virtual ~NaiveBayesCMLA() {};
     virtual void solve() const;
 private:
     TripleTable reform;    //transform the 'train' table to simplify the calculation
@@ -84,6 +89,7 @@ private:
 class NaiveBayesRMLA : public RMLA {
 public:
     NaiveBayesRMLA(ccc, ccc, ccc);
+    virtual ~NaiveBayesRMLA() {};
     virtual void solve() const;
 };
 

@@ -8,14 +8,20 @@
 
 //#include <iostream>
 #include "MLA.h"
+
 using std::cout;
 using std::endl;
+
 int main(int argc, const char * argv[]) {
-//    NaiveBayesCMLA nb("train.txt", "test.txt");
-//    cout << "succeed!\n";
-//    nb.solve();
-    NaiveBayesRMLA nb("Dataset_train.csv", "Dataset_validation.csv", "Dataset_test.csv");
-    cout << "succeed!\n";
-    nb.printTrainTable();
+    MLA *ptr;
+    
+    ptr = new NaiveBayesCMLA("train.txt", "test.txt");
+    ptr->solve();
+    delete ptr;
+    
+    ptr = new NaiveBayesRMLA("Dataset_train.csv", "Dataset_validation.csv", "Dataset_test.csv");
+    ptr->solve();
+    delete ptr;
+    
     return 0;
 }

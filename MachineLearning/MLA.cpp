@@ -10,6 +10,7 @@
 #define SMALL_N 20
 #define LAPLACE
 //#define NO_LAPLACE
+#define DEVIA 0.001
 
 using std::string;
 using std::map;
@@ -184,7 +185,7 @@ void NaiveBayesCMLA::solve() const {
     
     for(int i = 0; i < testSize; i++){
         map<int,int> content = test.getContentAt(i);
-        map<int,int>::iterator it;
+        map<int,int>::const_iterator it;
         float maxP = -1;
         int goalLabel = -1;
         for(int j = 0; j < _LABEL_CNT; ++j){
@@ -197,10 +198,10 @@ void NaiveBayesCMLA::solve() const {
                 
                 float frequency;
 #ifdef LAPLACE
-                frequency = (1.0 * reform.countOfKeyAt(j, it->first) + 1) / (wordCnt[j] + nonRepeat[j]);
+                frequency = (1.0 * reform.at(j, it->first) + 1) / (wordCnt[j] + nonRepeat[j]);
 #endif
 #ifdef NO_LAPLACE
-                frequency = 1.0 * reform.countOfKeyAt(j, it->first) / wordCnt[j];
+                frequency = 1.0 * reform.at(j, it->first) / wordCnt[j];
 #endif
                 if(it->second >= 2)
                     frequency = pow(frequency, it->second);
@@ -334,8 +335,67 @@ int RMLA::getLabelAt(int a, int b) const {
     return label.at(a, b);
 }
 
+float const * const RMLA::getLabelContentAt(int pos) const {
+    return label.getContentAt(pos);
+}
+
 NaiveBayesRMLA::NaiveBayesRMLA(ccc fTrain, ccc fVali, ccc fTest) : RMLA(fTrain, fVali, fTest) {}
 
 void NaiveBayesRMLA::solve() const {
+    FILE *fw;
+    int whichSize;
+    TripleTable const *whichTable;
     
+    for(int m = 0; m < 2; m++){
+        if(m == 0){
+            fw = fopen("/Users/Mr.z/Desktop/valiRegression.csv", "w");
+            whichSize = valiSize;
+            whichTable = &vali;
+        }
+        else{
+            fw = fopen("/Users/Mr.z/Desktop/testRegression.csv", "w");
+            whichSize = testSize;
+            whichTable = &test;
+        }
+        if(fw == NULL)
+            error(NO_SUCH_FILE);
+        
+        float trainLabel[trainSize][_LABEL_CNT];
+        for(int i = 0; i < trainSize; ++i)
+            memcpy(trainLabel[i], getLabelContentAt(i), sizeof(trainLabel[i]));
+        
+        int wordCnt[trainSize];
+        for(int i = 0; i < trainSize; ++i)
+            wordCnt[i] = train.getWordCntAt(i);
+        
+        for(int i = 0; i < whichSize; ++i){
+            map<int,int> content = whichTable->getContentAt(i);
+            map<int,int>::const_iterator it;
+            float goalLabel[_LABEL_CNT];
+            memset(goalLabel, 0, sizeof(goalLabel));
+            
+            for(int j = 0; j < trainSize; ++j){
+                float res = 1;
+                for(it = content.begin(); it != content.end(); ++it){
+                    if(it->first >= trainWordBagSize)
+                        continue;
+                    
+                    float frequency = (1.0 * train.at(j, it->first) + DEVIA) /
+                                        (trainWordBagSize * DEVIA + (float)wordCnt[j]);
+                    res = res * frequency;
+                }
+                for(int k = 0; k < _LABEL_CNT; ++k){
+                    goalLabel[k] += res * trainLabel[j][k];
+                }
+            }
+            float sumLabel = 0;
+            for(int j = 0; j < _LABEL_CNT; ++j)
+                sumLabel += goalLabel[j];
+            for(int j = 0; j < _LABEL_CNT; ++j)
+                goalLabel[j] /= sumLabel;
+            for(int j = 0; j < _LABEL_CNT - 1; ++j)
+                fprintf(fw, "%.6f,", goalLabel[j]);
+            fprintf(fw, "%.6f\n", goalLabel[_LABEL_CNT - 1]);
+        }
+    }
 }

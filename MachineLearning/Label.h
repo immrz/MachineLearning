@@ -35,6 +35,7 @@ public:
     FloatArray(FloatArray const &);
     FloatArray const &operator = (FloatArray const &);
     float at(int) const;
+    float const * const getContent() const;
 private:
     float content[_LABEL_CNT];
 };
@@ -44,8 +45,10 @@ public:
     LabelOfRegression();
     LabelOfRegression(LabelOfRegression const &);
     LabelOfRegression const &operator = (LabelOfRegression const &);
-    float at(int, int) const;
     
+    float at(int, int) const;
+    FloatArray const &getLabelsAt(int);
+    float const * const getContentAt(int) const;
     void append(std::vector<FloatArray> const &);
 private:
     std::vector<FloatArray> labels;

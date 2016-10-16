@@ -72,6 +72,10 @@ float FloatArray::at(int pos) const {
         return content[pos];
 }
 
+float const * const FloatArray::getContent() const {
+    return (float*)content;
+}
+
 /*Constructor of class LabelOfRegression*/
 LabelOfRegression::LabelOfRegression(){
     if(!labels.empty()){
@@ -95,6 +99,14 @@ float LabelOfRegression::at(int a, int b) const {
     }
     else
         return labels[a].at(b);
+}
+
+FloatArray const &LabelOfRegression::getLabelsAt(int pos){
+    return labels[pos];
+}
+
+float const * const LabelOfRegression::getContentAt(int pos) const {
+    return labels[pos].getContent();
 }
 
 void LabelOfRegression::append(vector<FloatArray> const &a){
