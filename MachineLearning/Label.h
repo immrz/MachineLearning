@@ -20,9 +20,7 @@ class LabelOfClassification{
 public:
     LabelOfClassification();
     LabelOfClassification(LabelOfClassification const &);
-    
     LabelOfClassification const &operator = (LabelOfClassification const &);
-    LabelOfClassification const &operator = (std::vector<int> const &);
     int at(int) const;
     int size() const;
     
@@ -34,6 +32,8 @@ private:
 class FloatArray{
 public:
     FloatArray(float const * const, int);
+    FloatArray(FloatArray const &);
+    FloatArray const &operator = (FloatArray const &);
     float at(int) const;
 private:
     float content[_LABEL_CNT];
@@ -45,6 +45,8 @@ public:
     LabelOfRegression(LabelOfRegression const &);
     LabelOfRegression const &operator = (LabelOfRegression const &);
     float at(int, int) const;
+    
+    void append(std::vector<FloatArray> const &);
 private:
     std::vector<FloatArray> labels;
 };

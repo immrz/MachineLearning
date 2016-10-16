@@ -11,8 +11,11 @@
 using std::cout;
 using std::endl;
 int main(int argc, const char * argv[]) {
-    NaiveBayesCMLA nb("train.txt", "test.txt");
+//    NaiveBayesCMLA nb("train.txt", "test.txt");
+//    cout << "succeed!\n";
+//    nb.solve();
+    NaiveBayesRMLA nb("Dataset_train.csv", "Dataset_validation.csv", "Dataset_test.csv");
     cout << "succeed!\n";
-    nb.solve();
+    nb.printTrainTable();
     return 0;
 }

@@ -41,6 +41,7 @@ protected:
     int trainSize;
     int testSize;
     int valiSize;
+    int trainWordBagSize;
     TripleTable train;
     TripleTable test;
     TripleTable vali;
@@ -54,7 +55,7 @@ public:
     virtual void readFromFile(int, FILE *); //the int parameter is to indicate which Table to initial
     virtual void solve() const = 0;
 
-    int getLabelAt(int, int) const;
+    int getLabelAt(int, int) const; //the first parameter is a hint
 private:
     LOC label;
 };
@@ -65,6 +66,8 @@ public:
     RMLA(ccc, ccc, ccc);
     virtual void readFromFile(int, FILE *); //the int parameter is to indicate which Table to initial
     virtual void solve() const = 0;
+    
+    int getLabelAt(int, int) const; //the two parameters are both positions
 private:
     LOR label;
 };
@@ -76,6 +79,12 @@ public:
 private:
     TripleTable reform;    //transform the 'train' table to simplify the calculation
     int prior[_LABEL_CNT]; //prior probilities
+};
+
+class NaiveBayesRMLA : public RMLA {
+public:
+    NaiveBayesRMLA(ccc, ccc, ccc);
+    virtual void solve() const;
 };
 
 #endif /* MLA_H */

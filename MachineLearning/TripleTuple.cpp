@@ -65,12 +65,7 @@ int TripleTuple::countOfKey(int key) const {
 }
 
 void TripleTuple::addByOne(int key){
-    map<int,int>::iterator it = tuple.find(key);
-    if(it == tuple.end()){
-        tuple.insert(pair<int,int>(key, 1));
-    }
-    else
-        it->second ++;
+    addByValue(key, 1);
 }
 
 void TripleTuple::addByValue(int key, int value){

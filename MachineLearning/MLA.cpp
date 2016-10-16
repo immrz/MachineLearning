@@ -8,15 +8,17 @@
 
 #include "MLA.h"
 #define SMALL_N 20
+#define LAPLACE
+//#define NO_LAPLACE
 
 using std::string;
 using std::map;
 using std::pair;
 using std::vector;
 
-char const * const delim = " \t\r\n";
+char const * const delim = " \t\r\n,";
 
-MLA::MLA() : train(), test(), vali(), trainSize(0), testSize(0), valiSize(0) {
+MLA::MLA() : train(), test(), vali(), trainSize(0), testSize(0), valiSize(0), trainWordBagSize(0) {
     if(!wordBag.empty()){
         wordBag.clear();
     }
@@ -125,6 +127,8 @@ void CMLA::readFromFile(int hint, FILE *fr){
         whichTable->insert(newTuple);
     }
     
+    if(hint == HINT_TRAIN)
+        trainWordBagSize = wordOrder;
     label.append(storeLabel);
 }
 
@@ -165,36 +169,173 @@ NaiveBayesCMLA::NaiveBayesCMLA(ccc fTrain, ccc fTest) : CMLA(fTrain, fTest) {
 }
 
 void NaiveBayesCMLA::solve() const {
+    FILE *fw = fopen("/Users/Mr.z/Desktop/result.txt", "w");
+    if(fw == NULL)
+        error(NO_SUCH_FILE);
+    
     int correct = 0;
     int wordCnt[_LABEL_CNT], nonRepeat[_LABEL_CNT];
     
     for(int i = 0; i < _LABEL_CNT; ++i){
         wordCnt[i] = reform.getWordCntAt(i);
         nonRepeat[i] = reform.sizeAt(i);
+        //printf("%d %d\n", wordCnt[i], nonRepeat[i]);
     }
     
     for(int i = 0; i < testSize; i++){
         map<int,int> content = test.getContentAt(i);
         map<int,int>::iterator it;
-        float maxP = -1, goalLabel = -1;
+        float maxP = -1;
+        int goalLabel = -1;
         for(int j = 0; j < _LABEL_CNT; ++j){
             float p = 1;
             for(it = content.begin(); it != content.end(); it++){
-                float frequency = 1.0 * reform.countOfKeyAt(j, it->first) + 1;
+                
+                /*if the word didn't appear in the train text, ignore it*/
+                if(it->first >= trainWordBagSize)
+                    continue;
+                
+                float frequency;
+#ifdef LAPLACE
+                frequency = (1.0 * reform.countOfKeyAt(j, it->first) + 1) / (wordCnt[j] + nonRepeat[j]);
+#endif
+#ifdef NO_LAPLACE
+                frequency = 1.0 * reform.countOfKeyAt(j, it->first) / wordCnt[j];
+#endif
                 if(it->second >= 2)
                     frequency = pow(frequency, it->second);
-                p = p * frequency / (wordCnt[j] + nonRepeat[j]);
+                p = p * frequency;
             }
             
             p = p * (float)prior[j];
-            if(maxP <= p){
+            if(maxP < p){
                 maxP = p;
                 goalLabel = j + 1; //'+1' is important
             }
         }
+        
+        fprintf(fw, "%d\n", goalLabel);
+        
         if(goalLabel == getLabelAt(HINT_TEST, i))
             correct++;
     }
     
+    fclose(fw);
     printf("The accuracy of Naive-Bayes for classification is %.3lf\n", 1.0 * correct / testSize);
+}
+
+
+
+RMLA::RMLA(ccc fTrain, ccc fVali, ccc fTest) : MLA() {
+    label = LOR();
+    FILE *f1 = fopen(fTrain, "r");
+    FILE *f2 = fopen(fVali, "r");
+    FILE *f3 = fopen(fTest, "r");
+    readFromFile(HINT_TRAIN, f1);
+    readFromFile(HINT_VALI, f2);
+    readFromFile(HINT_TEST, f3);
+    fclose(f1);
+    fclose(f2);
+    fclose(f3);
+    trainSize = train.size();
+    valiSize = vali.size();
+    testSize = test.size();
+}
+
+void RMLA::readFromFile(int hint, FILE *fr){
+    int stcOrder = 0, wordOrder = (int)wordBag.size();
+    TripleTable *whichTable;
+    map<string,int>::iterator findWordIter;
+    vector<FloatArray> storeLabel;
+    
+    switch(hint){
+        case HINT_TRAIN:
+            whichTable = &train; break;
+        case HINT_VALI:
+            whichTable = &vali; break;
+        case HINT_TEST:
+            whichTable = &test; break;
+        default:
+            error(SUCH_HINT_NOT_ALLOWED); return; break;
+    }
+    
+    if(fr == NULL){
+        error(NO_SUCH_FILE);
+    }
+    
+    char stc[MAXN];
+    fgets(stc, MAXN, fr); //the first line of the given files is useless
+    while(fgets(stc, MAXN, fr) != NULL){
+        int i, j, len, wordCnt = 0, commaCnt = 0;
+        float label[_LABEL_CNT];
+        if((len = (int)strlen(stc)) < 1){
+            break; //end reading
+        }
+        
+        //locate the start of the sentence and labels, respectively
+        for(i = 6, j = 0; stc[j]; ++j){
+            if(stc[j] == ','){
+                ++commaCnt;
+                if(commaCnt == 1)
+                    i = j;
+                else if(commaCnt == 2)
+                    break;
+            }
+        }
+        stc[j] = '\0';
+        char *ptr;
+        
+        //only train text gives the labels
+        if(hint == HINT_TRAIN){
+            for(ptr = strtok(stc + j + 1, delim), j = 0; ptr != NULL; j++){
+                sscanf(ptr, "%f", &label[j]);
+                ptr = strtok(NULL, delim);
+                if(j >= _LABEL_CNT)
+                    error(ARRAY_SIZE_NOT_MATCH);
+            }
+            if(j != _LABEL_CNT)
+                error(ARRAY_SIZE_NOT_MATCH);
+            storeLabel.push_back(FloatArray(label, _LABEL_CNT));
+        }
+        
+        //read the words one by one in this sentence
+        TripleTuple newTuple(stcOrder++);
+        char str[SMALL_N];
+        for(ptr = strtok(stc + i + 1, delim); ptr != NULL; ++wordCnt){
+            sscanf(ptr, "%s", str);
+            ptr = strtok(NULL, delim);
+            
+            string word(str);
+            findWordIter = wordBag.find(word);
+            
+            int tupleKey;
+            
+            if(findWordIter == wordBag.end()){          //the word needs a corresponding key
+                wordBag.insert(pair<string,int>(word, wordOrder));
+                tupleKey = wordOrder++;
+            }
+            else                                        //the word has got a corresponding key
+                tupleKey = findWordIter->second;
+            
+            newTuple.addByOne(tupleKey);
+        }
+        
+        newTuple.setWordCnt(wordCnt);
+        whichTable->insert(newTuple);
+    }
+    
+    if(hint == HINT_TRAIN){
+        trainWordBagSize = wordOrder;
+        label.append(storeLabel);
+    }
+}
+
+int RMLA::getLabelAt(int a, int b) const {
+    return label.at(a, b);
+}
+
+NaiveBayesRMLA::NaiveBayesRMLA(ccc fTrain, ccc fVali, ccc fTest) : RMLA(fTrain, fVali, fTest) {}
+
+void NaiveBayesRMLA::solve() const {
+    
 }

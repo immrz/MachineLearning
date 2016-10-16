@@ -24,11 +24,6 @@ LabelOfClassification const &LabelOfClassification::operator = (LabelOfClassific
     return *this;
 }
 
-LabelOfClassification const &LabelOfClassification::operator = (std::vector<int> const &a){
-    labels = a;
-    return *this;
-}
-
 int LabelOfClassification::at(int pos) const {
     if(pos >= labels.size()){
         error(INDEX_BEYOND_VECTOR_SIZE);
@@ -57,6 +52,15 @@ FloatArray::FloatArray(float const * const p, int n){
     }
     else
         memcpy(content, p, sizeof(content));
+}
+
+FloatArray::FloatArray(FloatArray const &a){
+    *this = a;
+}
+
+FloatArray const &FloatArray::operator=(FloatArray const &a){
+    memcpy(content, a.content, sizeof(content));
+    return *this;
 }
 
 float FloatArray::at(int pos) const {
@@ -91,4 +95,8 @@ float LabelOfRegression::at(int a, int b) const {
     }
     else
         return labels[a].at(b);
+}
+
+void LabelOfRegression::append(vector<FloatArray> const &a){
+    labels.insert(labels.end(), a.begin(), a.end());
 }
